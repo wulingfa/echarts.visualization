@@ -1,0 +1,3 @@
+1.安装node
+
+2.输入node app.js

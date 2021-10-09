@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button class="connect">连接</button>
+    <button class="send">发送数据</button>
+    <div>服务端接收的数据如下：</div>
+    <div class="receive"></div>
+    <script>
+        var connect = document.querySelector(".connect");
+        var send = document.querySelector(".send");
+        var receive = document.querySelector(".receive");
+        var ws = new WebSocket('ws://localhost:9998')
+        connect.onclick = function() {
+            ws.onopen = () => {
+                console.log("连接服务器成功");
+            }
+            ws.onclose = () => {
+                console.log("服务器连接失败");
+            }
+            ws.onmessage = msg => {
+                console.log("我是从服务端发送过来的数据");
+                receive.innerHTML =  msg.data
+            }
+        }
+        send.onclick = function() {
+            // ws.send("我是来自客户端的数据")
+            ws.send(JSON.stringify({
+                action:'getData',
+                scoketType: 'trendData',
+                charName:'trend',
+                value: true
+            }))
+        }
+    </script>
+</body>
+</html>
